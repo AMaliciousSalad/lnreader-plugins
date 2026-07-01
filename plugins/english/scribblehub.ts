@@ -177,7 +177,7 @@ class ScribbleHubPlugin implements Plugin.PluginBase {
   }
 
   async searchNovels(searchTerm: string): Promise<Plugin.NovelItem[]> {
-    const url = `${this.site}/series-finder/?fs=1&sh=${encodeURIComponent(searchTerm)}`;
+    const url = `${this.site}series-finder/?fs=1&sh=${encodeURIComponent(searchTerm)}`;
     const result = await fetchApi(url);
     const body = await result.text();
 
