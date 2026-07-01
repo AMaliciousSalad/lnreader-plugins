@@ -1,6 +1,6 @@
 import { CheerioAPI, load as parseHTML } from 'cheerio';
 import { fetchApi } from '@libs/fetch';
-import { FilterTypes, Filters } from '@libs/filterInputs';
+import { Filters, FilterTypes } from '@libs/filterInputs';
 import { Plugin } from '@/types/plugin';
 import dayjs from 'dayjs';
 
@@ -9,7 +9,7 @@ class ScribbleHubPlugin implements Plugin.PluginBase {
   name = 'Scribble Hub';
   icon = 'src/en/scribblehub/icon.png';
   site = 'https://www.scribblehub.com/';
-  version = '1.0.3';
+  version = '1.0.3.1';
 
   parseNovels(loadedCheerio: CheerioAPI) {
     const novels: Plugin.NovelItem[] = [];
@@ -94,7 +94,10 @@ class ScribbleHubPlugin implements Plugin.PluginBase {
       path: novelPath,
       name: loadedCheerio('.fic_title').text() || 'Untitled',
       cover: loadedCheerio('.fic_image > img').attr('src'),
-      summary: loadedCheerio('.wi_fic_desc').text().replace(/more>>/g,"").replace(/<<less/,""),
+      summary: loadedCheerio('.wi_fic_desc')
+        .text()
+        .replace(/more>>/g, '')
+        .replace(/<<less/, ''),
       author: loadedCheerio('.auth_name_fic').text(),
       chapters: [],
     };
@@ -172,8 +175,7 @@ class ScribbleHubPlugin implements Plugin.PluginBase {
 
     const loadedCheerio = parseHTML(body);
 
-    const chapterText = loadedCheerio('div.chp_raw').html() || '';
-    return chapterText;
+    return loadedCheerio('div.chp_raw').html() || '';
   }
 
   async searchNovels(searchTerm: string): Promise<Plugin.NovelItem[]> {
