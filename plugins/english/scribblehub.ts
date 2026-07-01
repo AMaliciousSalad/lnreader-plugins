@@ -9,7 +9,7 @@ class ScribbleHubPlugin implements Plugin.PluginBase {
   name = 'Scribble Hub';
   icon = 'src/en/scribblehub/icon.png';
   site = 'https://www.scribblehub.com/';
-  version = '1.0.3.2';
+  version = '1.0.3.3';
 
   parseNovels(loadedCheerio: CheerioAPI) {
     const novels: Plugin.NovelItem[] = [];
@@ -97,7 +97,7 @@ class ScribbleHubPlugin implements Plugin.PluginBase {
       summary: loadedCheerio('.wi_fic_desc')
         .text()
         .replace(/more>>/g, '')
-        .replace(/<<less/, ''),
+        .replace(/<<less/g, ''),
       author: loadedCheerio('.auth_name_fic').text(),
       chapters: [],
     };
