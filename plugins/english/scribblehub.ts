@@ -9,7 +9,7 @@ class ScribbleHubPlugin implements Plugin.PluginBase {
   name = 'Scribble Hub';
   icon = 'src/en/scribblehub/icon.png';
   site = 'https://www.scribblehub.com/';
-  version = '1.0.2';
+  version = '1.0.3';
 
   parseNovels(loadedCheerio: CheerioAPI) {
     const novels: Plugin.NovelItem[] = [];
@@ -94,7 +94,7 @@ class ScribbleHubPlugin implements Plugin.PluginBase {
       path: novelPath,
       name: loadedCheerio('.fic_title').text() || 'Untitled',
       cover: loadedCheerio('.fic_image > img').attr('src'),
-      summary: loadedCheerio('.wi_fic_desc').text(),
+      summary: loadedCheerio('.wi_fic_desc').text().replace(/more>>/g,"").replace(/<<less/,""),
       author: loadedCheerio('.auth_name_fic').text(),
       chapters: [],
     };
@@ -177,7 +177,7 @@ class ScribbleHubPlugin implements Plugin.PluginBase {
   }
 
   async searchNovels(searchTerm: string): Promise<Plugin.NovelItem[]> {
-    const url = `${this.site}?s=${encodeURIComponent(searchTerm)}&post_type=fictionposts`;
+    const url = `${this.site}/series-finder/?fs=1&sh=${encodeURIComponent(searchTerm)}`;
     const result = await fetchApi(url);
     const body = await result.text();
 
